@@ -7,6 +7,7 @@ PortGroup           meson 1.0
 name                mpd
 
 version             0.21.22
+revision            1
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          audio
 maintainers         nomaintainer
@@ -57,7 +58,8 @@ depends_lib \
     port:libopus \
     port:yajl \
     port:libzzip \
-    port:libshout2
+    port:libshout2 \
+    port:py-sphinx
 
 # requires C++14
 compiler.cxx_standard 2014
@@ -69,6 +71,7 @@ compiler.blacklist-append {clang < 700.0.72}
 # Using it avoids needing to list things both in dependencies and in the configure args
 configure.args \
     -Dauto_features=enabled \
+    -Ddocumentation=true \
     -Dffmpeg=disabled \
     -Dchromaprint=disabled \
     -Djack=disabled \
@@ -124,6 +127,15 @@ variant mad conflicts mpg123 description (Use mad rather than mpg123 as mp3 deco
 if {![variant_isset mpg123]} {
     default_variants    +mad
 }
+
+#pre-configure {
+#    set fid [open ${workpath}/cross.txt w]
+#    puts $fid {[binaries]}
+#    puts $fid "sphinx-build = 'sphinx-build-py38'"
+#    close $fid
+#}
+
+#configure.args-append --cross ${workpath}/cross.txt
 
 # requires support for C++14.
 compiler.cxx_standard   2014
