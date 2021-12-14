@@ -161,6 +161,9 @@ platform macosx {
             configure.sdk_version   10.8
         }
 
+        # Workaround broken sdk version
+        configure.sdk_version 12.0
+
         # Force clang compiler as installed by Xcode's CLT's... hopefully.
         compiler.blacklist-append   *gcc* cc macports-*
     }
@@ -173,6 +176,7 @@ platform macosx {
 
         default_variants-append     +x11
     }
+
 }
 
 platform darwin {
